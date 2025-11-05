@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koch Hugo| portfolio</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+
+<div class="background-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+  <!-- ✅ NAVBAR -->
+  <header class="navbar">
+  <div class="nav-container">
+    <div class="logo">HK.</div>
+    <nav>
+      <ul>
+        <li><a href="#hero" class="nav-link">À propos</a></li>
+        <li><a href="#tech-info" class="nav-link">Parcours & projets</a></li>
+        <li><a href="#technologies" class="nav-link">Compétences techniques</a></li>
+        <li><a href="#veille" class="nav-link">Veille technologique</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <!-- ✅ SECTION ACCUEIL -->
+  <section id="hero" class="hero-section">
+  <div class="hero-content">
+    <h1>Bonjour, je suis <span class="highlight">Hugo Koch</span></h1>
+    <p class="tagline">Futur expert en cybersécurité </p>
+    <p class="intro-text">
+      Actuellement en 2ᵉ année de BTS SIO, je me spécialise dans le développement web, logiciel et la sécurité des SI. Sur ce site, vous trouverez mes projets, compétences et expériences.
+    </p>
+    <div class="hero-buttons">
+      <a href="#contact" class="btn-primary">Me contacter</a>
+      <a href="assets/pdf/CV HUGO KOCH.pdf" class="btn-secondary" download>Télécharger mon CV</a>
+    </div>
+  </div>
+</section>
+
+
+<section id="tech-info">
+  <h2>Parcours & Projets</h2>
+
+<nav class="info-nav">
+  <button data-target="projects" class="active">Projets</button>
+  <button data-target="experience">Expérience</button>
+  <button data-target="certifications">Certifications</button>
+</nav>
+
+<div class="info-content">
+  <div class="info-panel" id="projects">
+    <h3>Mes Projets</h3>
+
+    <div class="project-item">
+      <h4>Application WEB IA de fact-checking</h4>
+      <span class="project-date">En cours</span>
+      <p>
+        Projet de création d'une application Web pour faciliter le fact checking des News présentes sur internet grace à L'IA.
+      </p>
+      <h4> Technologies utilisés </h4>
+
+      <div class="project-tech-icons">
+        <div class="tech-icon-bubble">
+          <img src="assets/images/Vue.js_Logo_2.svg.png" alt="vuejs">
+          <span>Vue.js</span>
+        </div>
+        <div class="tech-icon-bubble">
+          <img src="assets/images/python_logo_icon_168886.png" alt="Python">
+          <span>Python</span>
+        </div>
+        <div class="tech-icon-bubble">
+          <img src="assets/images/Gemini_language_model_logo.png" alt="gemini">
+          <span>API Gemini</span>
+        </div>
+      </div> <div class="project-links">
+          <a href="#" target="_blank" class="btn-project">Voir le dépôt GitHub</a>
+          <a href="#" target="_blank" class="btn-project">Consulter la documentation</a>
+      </div>
+    </div>
+  </div> <div class="info-panel hidden" id="experience">
+  <h3>Mon Expérience</h3>
+<div class="timeline-item">
+    <div class="timeline-header">
+      <img src="assets/images/ACTEMIUM_Logo.png" alt="Actemium" class="timeline-logo">
+      <div class="timeline-meta">
+        <h4>Actemium PI Nancy – Assistant Administration Système</h4>
+        <span class="timeline-date">Août 2025</span>
+      </div>
+    </div>
+    <div class="timeline-content">
+      <p>
+        Pendant cette mission, j’ai participé à la <strong>gestion des accès utilisateurs</strong> et à l’<strong>administration de l’annuaire Active Directory</strong>.
+      </p>
+      <ul>
+        <li>Création, modification et suppression de comptes dans Active Directory</li>
+        <li>Gestion des <strong>permissions via les groupes de sécurité</strong> (ressources partagées, imprimantes…)</li>
+        <li>Traitement des incidents réseau : problèmes de connectivité, DNS, etc.</li>
+        <li>Création de <strong>scripts PowerShell</strong> pour automatiser les tâches (onboarding, audit des comptes inactifs)</li>
+      </ul>
+      <p>
+        Cette expérience a renforcé mes compétences en <strong>administration système</strong>, en <strong>automatisation IT</strong> et en sécurisation des accès dans un environnement professionnel.
+      </p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-header">
+      <img src="assets/images/ACTEMIUM_Logo.png" alt="Actemium" class="timeline-logo">
+      <div class="timeline-meta">
+        <h4>Actemium PI Nancy – Stagiaire Cybersécurité</h4>
+        <span class="timeline-date">Juin 2025 – Juillet 2025</span>
+      </div>
+    </div>
+    <div class="timeline-content">
+      <p>
+        Durant mon stage chez <strong>Actemium Nancy</strong>, j’ai accompagné le RSMSI dans la mise en œuvre de la norme <strong>ISO/IEC 27001</strong>.
+      </p>
+      <ul>
+        <li>Réalisation d’une <strong>analyse de risques complète</strong> avec la méthode <strong>EBIOS RM</strong></li>
+        <li>Identification des événements redoutés, scénarios de menace et mesures existantes</li>
+        <li>Sélection des <strong>mesures de sécurité adaptées</strong> (techniques, organisationnelles, humaines)</li>
+      </ul>
+      <p>
+        Ce stage m’a permis de développer une <strong>approche concrète de la gestion des risques</strong>, une bonne maîtrise de la norme ISO 27001, et d’appliquer des méthodes d’analyse structurées en contexte professionnel.
+      </p>
+    </div>
+  </div>
+
+  
+</div>
+
+  <div class="info-panel hidden" id="certifications">
+  <h3>Mes Certifications</h3>
+    <div class="cert-grid">
+      <div class="cert-item">
+        <img src="assets/images/cisco_logo.jpeg" alt="Certif 1">
+        <p>Certification Cisco : Network Addressing and Basic Troubleshooting</p>
+      </div>
+      <div class="cert-item">
+        <img src="assets/images/cnil___commission_nationale_de_linformatique_et_des_libert_s_logo.jpeg" alt="Certif 2">
+        <p>Certification CNIL : Règlement général sur la protection des données (RGPD)</p>
+      </div>
+      <div class="cert-item">
+        <img src="assets/images/logoanssi.png" alt="Certif 3">
+        <p>MOOC ANSSI : Cybersécurité - ANSSI</p>
+      </div>
+    </div>
+  </div>
+</div> </section>
+
+ <section id="technologies">
+  <h2>Compétences techniques</h2>
+
+  <nav class="skills-nav">
+    <button data-target="langages" class="active">Langages</button>
+    <button data-target="outils">Outils & Environnements</button>
+    <button data-target="cyber">Cybersécurité</button>
+  </nav>
+
+  <div class="skills-content">
+
+    <div class="skills-panel" id="langages">
+      <div class="skills-grid">
+        <div class="skill-bubble html">
+          <div class="bubble">
+            <img src="assets/images/9f2244b0854500f24bcddd0ee52214fe-removebg-preview.png" alt="HTML">
+          </div>
+          <span>HTML5</span>
+        </div>
+        <div class="skill-bubble css">
+          <div class="bubble">
+            <img src="assets/images/css_original_logo_icon_146575.webp" alt="CSS">
+          </div>
+          <span>CSS3</span>
+        </div>
+        <div class="skill-bubble js">
+          <div class="bubble">
+            <img src="assets/images/JavaScript-logo.png" alt="JavaScript">
+          </div>
+          <span>JavaScript</span>
+        </div>
+        <div class="skill-bubble python">
+          <div class="bubble">
+            <img src="assets/images/python_logo_icon_168886.png" alt="Python">
+          </div>
+          <span>Python</span>
+        </div>
+        <div class="skill-bubble bash">
+          <div class="bubble">
+            <img src="assets/images/monochrome_light.png" alt="Bash">
+          </div>
+          <span>Bash</span>
+        </div>
+        <div class="skill-bubble java">
+          <div class="bubble">
+            <img src="assets/icons/java_logo_icon_169577.png" alt="Shell">
+          </div>
+          <span>Java</span>
+    
+        </div>
+        <div class="skill-bubble vue">
+          <div class="bubble">
+            <img src="assets/images/Vue.js_Logo_2.svg.png" alt="vue">
+          </div>
+          <span>Vue.js</span>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="skills-panel hidden" id="outils">
+  <div class="tool-grid">
+    <div class="tool-card">
+      <h4>Git / GitHub</h4>
+      <p>Gestion de version, collaboration en équipe, CI/CD.</p>
+    </div>
+    <div class="tool-card">
+      <h4>VS Code</h4>
+      <p>Éditeur léger, personnalisable avec extensions.</p>
+    </div>
+    <div class="tool-card">
+      <h4>Active Directory</h4>
+      <p>Gestion des utilisateurs, groupes et accès réseau.</p>
+    </div>
+    <div class="tool-card">
+      <h4>VirtualBox</h4>
+      <p>Tests en VM, iso bootables, environnements isolés.</p>
+    </div>
+    <div class="tool-card">
+      <h4>PowerShell</h4>
+      <p>Scripts d’automatisation pour tâches systèmes.</p>
+    </div>
+    <div class="tool-card">
+      <h4>Kali Linux</h4>
+      <p>Outils de pentest, forensic et audit de sécurité.</p>
+    </div>
+  </div>
+</div>
+
+
+
+    <div class="skills-panel hidden" id="cyber">
+  <div class="cyber-grid">
+    <div class="cyber-card">
+      <h4>EBIOS RM</h4>
+      <p>Analyse de risques structurée basée sur les scénarios de menace.</p>
+    </div>
+    <div class="cyber-card">
+      <h4>ISO/IEC 27001</h4>
+      <p>Norme de management de la sécurité des systèmes d'information.</p>
+    </div>
+    <div class="cyber-card">
+      <h4>Wireshark</h4>
+      <p>Analyse des paquets réseau pour l’audit et le dépannage.</p>
+    </div>
+    <div class="cyber-card">
+      <h4>Gestion des accès</h4>
+      <p>Contrôle des permissions via Active Directory et groupes de sécurité.</p>
+    </div>
+    <div class="cyber-card">
+      <h4>Analyse de risques</h4>
+      <p>Identification des menaces et sélection de mesures de sécurité.</p>
+    </div>
+    
+    </div>
+  </div>
+</div>
+
+</section>
+
+<section id="veille">
+  <h2>Veille technologique</h2>
+  <p class="veille-intro">
+    Voici quelques sources fiables que je consulte régulièrement pour rester informé.
+  </p>
+
+  <ul class="veille-list">
+    <li><a href="https://www.zdnet.com" target="_blank">ZDNet</a></li>
+    <li><a href="https://www.cert.ssi.gouv.fr/" target="_blank">CERT-FR</a></li>
+    <li><a href="https://blog.malwarebytes.com/" target="_blank">Malwarebytes Blog</a></li>
+    <li><a href="https://cyber.gouv.fr/publications" target="_blank">Cyber Gouv</a></li>
+    
+  </ul>
+</section>
+
+  <footer id="contact">
+  <h2>Contact</h2>
+  <div class="contact-links">
+ <div class="contact-icons">
+    <a href="mailto:hkochcontact@gmail.com" title="Email">
+      <img src="assets/icons/clipart1587255.png" alt="Email">
+    </a>
+    <a href="https://www.linkedin.com/in/hugo-koch-265908266/" target="_blank" title="LinkedIn">
+      <img src="assets/icons/linkedin_circle_gray-512.webp" alt="LinkedIn">
+    </a>
+    <a href="https://github.com/tonprofil" target="_blank" title="GitHub">
+      <img src="assets/icons/github.png" alt="GitHub">
+    </a>
+  </div>
+  </div>
+    <p>&copy; 2025 Hugo Koch. Tous droits réservés.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html tu peux me séparer chaque sections en différentes pages stp
