@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hugo Koch | Veille Technologique</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="background-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">HK.</div>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="nav-link">À propos</a></li>
+        <li><a href="parcours.html" class="nav-link">Parcours & projets</a></li>
+        <li><a href="competences.html" class="nav-link">Compétences techniques</a></li>
+        <li><a href="veille.html" class="nav-link active">Veille technologique</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section id="veille">
+  <h2>Veille technologique & Juridique</h2>
+  <p class="veille-intro">
+    Surveillance des actualités en cybersécurité, protection des données et législation numérique française (RGPD, directives NIS2).
+  </p>
+
+  <div class="veille-container">
+    <div class="sources-list">
+      <h3>Sources officielles</h3>
+      <ul class="veille-list">
+        <li><a href="https://www.cnil.fr/" target="_blank">CNIL - Protection des données</a></li>
+        <li><a href="https://www.ssi.gouv.fr/" target="_blank">ANSSI - Sécurité des SI</a></li>
+        <li><a href="https://www.cert.ssi.gouv.fr/" target="_blank">CERT-FR - Alertes sécurité</a></li>
+      </ul>
+    </div>
+
+    <div class="rss-feeds">
+      <h3>Actualités récentes</h3>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">Toutes</button>
+        <button class="filter-btn" data-filter="cnil">CNIL</button>
+        <button class="filter-btn" data-filter="cert">CERT-FR</button>
+        <button class="filter-btn" data-filter="anssi">ANSSI</button>
+      </div>
+      <div id="rss-articles" class="articles-grid">
+        <div class="loading">Chargement des actualités...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <h2>Contact</h2>
+  <div class="contact-links">
+    <div class="contact-icons">
+      <a href="mailto:hkochcontact@gmail.com" title="Email"><img src="assets/icons/clipart1587255.png" alt="Email"></a>
+      <a href="https://www.linkedin.com/in/hugo-koch-265908266/" target="_blank" title="LinkedIn"><img src="assets/icons/linkedin_circle_gray-512.webp" alt="LinkedIn"></a>
+      <a href="https://github.com/tonprofil" target="_blank" title="GitHub"><img src="assets/icons/github.png" alt="GitHub"></a>
+    </div>
+  </div>
+  <p>&copy; 2025 Hugo Koch. Tous droits réservés.</p>
+</footer>
+
+<script src="js/rss-feeds.js"></script>
+</body>
+</html>
