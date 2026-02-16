@@ -2,51 +2,91 @@ class RSSReader {
   constructor() {
     this.feeds = [
       {
+        name: "CNIL - Actualités",
+        url: "https://www.cnil.fr/fr/rss.xml",
+        type: "cnil",
+        lang: "fr"
+      },
+      {
         name: "CERT-FR - Alertes",
         url: "https://www.cert.ssi.gouv.fr/feed/",
         type: "cert",
         lang: "fr"
       },
-      
       {
         name: "ANSSI - Actualités",
-        url: "https://cyber.gouv.fr/actualites",
+        url: "https://cyber.gouv.fr/rss.xml",
         type: "anssi",
         lang: "fr"
       }
     ];
     
     this.articles = [];
-    this.maxArticles = 10;
+    this.maxArticles = 12; // Pour afficher jusqu'à 4 articles par source
     this.currentFilter = 'all';
   }
 
   async fetchFeed(feed) {
     try {
-      // Utilisation d'un proxy CORS pour contourner les restrictions
-      const proxyUrl = 'https://api.allorigins.win/get?url=';
-      const response = await fetch(`${proxyUrl}${encodeURIComponent(feed.url)}`);
+      // TENTATIVE 1 : Utilisation de l'API rss2json (très fiable pour les flux RSS)
+      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
+      const response = await fetch(apiUrl);
       
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       const data = await response.json();
-      return this.parseRSS(data.contents, feed.name, feed.type);
+      
+      if (data.status === 'ok' && data.items.length > 0) {
+        return this.parseRss2Json(data.items, feed.name, feed.type);
+      } else {
+        throw new Error('rss2json n\'a pas renvoyé de données valides.');
+      }
     } catch (error) {
-      console.error(`Error fetching ${feed.name}:`, error);
-      // Retourner des données de démonstration en cas d'erreur
-      return this.getFallbackArticles(feed.name, feed.type);
+      console.warn(`Tentative 1 échouée pour ${feed.name}. Essai avec proxy alternatif...`, error);
+      
+      // TENTATIVE 2 : Utilisation de allorigins comme plan B (raw XML)
+      try {
+        const proxyUrl = 'https://api.allorigins.win/get?url=';
+        const response2 = await fetch(`${proxyUrl}${encodeURIComponent(feed.url)}`);
+        
+        if (!response2.ok) throw new Error(`HTTP error! status: ${response2.status}`);
+        
+        const data2 = await response2.json();
+        return this.parseRawXML(data2.contents, feed.name, feed.type);
+      } catch (error2) {
+        console.error(`Échec total pour ${feed.name}:`, error2);
+        // Si tout échoue (ex: pas de connexion), on met des données par défaut pertinentes
+        return this.getFallbackArticles(feed.name, feed.type);
+      }
     }
   }
 
-  parseRSS(xmlText, sourceName, sourceType) {
+  // Parseur pour la structure renvoyée par l'API rss2json
+  parseRss2Json(items, sourceName, sourceType) {
+    const articles = [];
+    const maxItems = Math.min(items.length, 4); // Prend les 4 articles les plus récents
+    
+    for (let i = 0; i < maxItems; i++) {
+      const item = items[i];
+      articles.push({
+        title: this.cleanTitle(item.title || 'Sans titre'),
+        link: item.link || '#',
+        description: this.cleanDescription(item.description || item.content || ''),
+        date: this.formatDate(item.pubDate),
+        source: sourceName,
+        type: sourceType
+      });
+    }
+    return articles;
+  }
+
+  // Parseur pour la structure brute XML (Plan B)
+  parseRawXML(xmlText, sourceName, sourceType) {
     try {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-      
       const items = xmlDoc.querySelectorAll('item');
       const articles = [];
-      
-      // Prendre maximum 4 articles par flux
       const maxItems = Math.min(items.length, 4);
       
       for (let i = 0; i < maxItems; i++) {
@@ -65,81 +105,65 @@ class RSSReader {
           type: sourceType
         });
       }
-      
       return articles;
     } catch (error) {
-      console.error('Error parsing RSS:', error);
+      console.error('Erreur de parsing XML:', error);
       return this.getFallbackArticles(sourceName, sourceType);
     }
   }
 
-  // Articles de démonstration si les flux RSS échouent
+  // Données de secours de dernière chance (si API/réseau planté)
   getFallbackArticles(sourceName, sourceType) {
     const fallbackArticles = {
-      'cert': [
+      'cnil': [
         {
-          title: "Alerte CERT-FR : Vulnérabilités critiques dans les solutions VPN",
-          link: "https://www.cert.ssi.gouv.fr/",
-          description: "Le CERT-FR publie un avis concernant des vulnérabilités critiques affectant plusieurs solutions VPN largement déployées.",
+          title: "Accéder aux dernières actualités de la CNIL",
+          link: "https://www.cnil.fr/fr/actualites",
+          description: "Impossible de charger le flux RSS en temps réel. Cliquez ici pour voir les dernières actualités juridiques directement sur le site de la CNIL.",
           date: this.formatDate(new Date()),
           source: sourceName,
           type: sourceType
-        },
+        }
+      ],
+      'cert': [
         {
-          title: "Campagne de cyberattaques ciblant le secteur santé",
-          link: "https://www.cert.ssi.gouv.fr/",
-          description: "Alerte sur une campagne d'attaques par ransomware visant spécifiquement les établissements de santé français.",
-          date: this.formatDate(new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)),
+          title: "Accéder aux dernières alertes du CERT-FR",
+          link: "https://www.cert.ssi.gouv.fr/alerte/",
+          description: "Impossible de charger le flux RSS en temps réel. Cliquez ici pour consulter les dernières alertes de sécurité.",
+          date: this.formatDate(new Date()),
           source: sourceName,
           type: sourceType
         }
       ],
       'anssi': [
         {
-          title: "L'ANSSI lance un nouveau référentiel de sécurité cloud",
-          link: "https://www.ssi.gouv.fr/",
-          description: "Publication du référentiel SecNumCloud 3.5 avec de nouvelles exigences pour la souveraineté numérique.",
+          title: "Accéder aux dernières actualités de l'ANSSI",
+          link: "https://cyber.gouv.fr/actualites",
+          description: "Impossible de charger le flux RSS en temps réel. Cliquez ici pour consulter les dernières publications sur cyber.gouv.fr.",
           date: this.formatDate(new Date()),
-          source: sourceName,
-          type: sourceType
-        },
-        {
-          title: "Campagne de sensibilisation aux rançongiciels",
-          link: "https://www.ssi.gouv.fr/",
-          description: "L'ANSSI intensifie sa campagne de formation pour prévenir les attaques par rançongiciels dans les PME.",
-          date: this.formatDate(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)),
           source: sourceName,
           type: sourceType
         }
       ]
     };
-    
     return fallbackArticles[sourceType] || [];
   }
 
   cleanTitle(title) {
-    if (title.length > 100) {
-      return title.substring(0, 100) + '...';
-    }
-    return title;
+    return title.length > 100 ? title.substring(0, 100) + '...' : title;
   }
 
   cleanDescription(description) {
     const div = document.createElement('div');
     div.innerHTML = description;
     let text = div.textContent || div.innerText || '';
-    
-    text = text.replace(/<[^>]*>/g, '');
-    if (text.length > 120) {
-      text = text.substring(0, 120) + '...';
-    }
-    
-    return text;
+    // Nettoyage des balises HTML parasites restantes
+    text = text.replace(/<[^>]*>?/gm, '');
+    return text.length > 150 ? text.substring(0, 150) + '...' : text;
   }
 
   formatDate(dateString) {
-    if (!dateString) return 'Date inconnue';
-    
+    if (!dateString) return 'Récemment';
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString('fr-FR', {
@@ -148,7 +172,7 @@ class RSSReader {
         year: 'numeric'
       });
     } catch (error) {
-      return 'Date inconnue';
+      return 'Récemment';
     }
   }
 
@@ -156,16 +180,18 @@ class RSSReader {
     const container = document.getElementById('rss-articles');
     
     try {
-      container.innerHTML = '<div class="loading">Chargement des actualités...</div>';
+      if (container) {
+        container.innerHTML = '<div class="loading">📡 Récupération des articles officiels en temps réel...</div>';
+      }
       
-      // Charger tous les flux en parallèle
       const promises = this.feeds.map(feed => this.fetchFeed(feed));
       const results = await Promise.allSettled(promises);
       
-      // Combiner tous les articles
       this.articles = results
         .filter(result => result.status === 'fulfilled')
         .flatMap(result => result.value)
+        // Trier par date la plus récente
+        .sort((a, b) => new Date(b.date) - new Date(a.date)) 
         .slice(0, this.maxArticles);
       
       this.displayArticles();
@@ -173,12 +199,16 @@ class RSSReader {
       
     } catch (error) {
       console.error('Error loading feeds:', error);
-      container.innerHTML = '<div class="error">Erreur lors du chargement des actualités</div>';
+      if (container) {
+        container.innerHTML = '<div class="error">Erreur lors du chargement des actualités</div>';
+      }
     }
   }
 
   displayArticles(filteredArticles = null) {
     const container = document.getElementById('rss-articles');
+    if (!container) return; // Sécurité si la div n'existe pas sur la page en cours
+
     const articlesToShow = filteredArticles || this.articles;
     
     if (articlesToShow.length === 0) {
@@ -188,7 +218,7 @@ class RSSReader {
     
     const articlesHTML = articlesToShow.map(article => `
       <div class="article-card" data-type="${article.type}">
-        <a href="${article.link}" target="_blank" class="article-title">
+        <a href="${article.link}" target="_blank" rel="noopener noreferrer" class="article-title">
           ${article.title}
         </a>
         <p class="article-description">${article.description}</p>
@@ -210,7 +240,7 @@ class RSSReader {
   getTypeLabel(type) {
     const labels = {
       'cert': '🛡️ CERT-FR',
-      'cnil': '🔐 CNIL',
+      'cnil': '⚖️ CNIL - Juridique',
       'anssi': '⚡ ANSSI'
     };
     return labels[type] || type;
@@ -220,9 +250,14 @@ class RSSReader {
     const buttons = document.querySelectorAll('.filter-btn');
     
     buttons.forEach(btn => {
+      // Éviter d'ajouter l'événement plusieurs fois
+      btn.replaceWith(btn.cloneNode(true));
+    });
+
+    const newButtons = document.querySelectorAll('.filter-btn');
+    newButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        // Mettre à jour les boutons actifs
-        buttons.forEach(b => b.classList.remove('active'));
+        newButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
         this.currentFilter = btn.dataset.filter;
@@ -252,11 +287,14 @@ class RSSReader {
 
 // Initialisation quand la page est chargée
 document.addEventListener('DOMContentLoaded', () => {
-  const rssReader = new RSSReader();
-  rssReader.loadAllFeeds();
-  
-  // Recharger toutes les heures
-  setInterval(() => {
+  // On ne charge le flux RSS que si la div d'affichage est présente (pour la séparation en plusieurs pages)
+  if (document.getElementById('rss-articles')) {
+    const rssReader = new RSSReader();
     rssReader.loadAllFeeds();
-  }, 60 * 60 * 1000);
+    
+    // Recharger toutes les heures
+    setInterval(() => {
+      rssReader.loadAllFeeds();
+    }, 60 * 60 * 1000);
+  }
 });
